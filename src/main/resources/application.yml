@@ -1,11 +1,15 @@
 server:
   port: 8000
 
+
+
 spring:
+#  flyway:
+#    enabled: false
   datasource:
-    url: jdbc:postgresql://localhost/travelAgency
+    url: jdbc:postgresql://localhost/userSystem
     username: postgres
-    password: root
+    password: ROOT
   jpa:
     show-sql: true
     hibernate:

@@ -1,14 +1,17 @@
 package com.project.usersystem.service;
 
-import com.project.usersystem.model.User;
+import com.project.usersystem.dto.UserAccountForm;
+import com.project.usersystem.dto.UserAccountOutput;
+import com.project.usersystem.model.UserAccount;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> getAll();
+    List<UserAccountOutput> getAll();
 
-    User getById(long id);
+    UserAccountOutput getById(long id);
 
-    void create(User user);
+    void create(UserAccountForm dto);
+
 }
