@@ -31,5 +31,4 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	compile group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.6.0'
 
-
 }
