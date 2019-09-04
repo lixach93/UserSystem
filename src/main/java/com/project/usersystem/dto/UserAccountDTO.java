@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccountUpdateDTO {
+public class UserAccountDTO {
 
     private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
     private String id;
@@ -23,18 +23,18 @@ public class UserAccountUpdateDTO {
     private String password;
     @Pattern(regexp = "\\w{1,16}", message = "Only latin. From 1 to 16 symbols")
     private String firstName;
-    @Pattern(regexp = "\\w{1,16}")
+    @Pattern(regexp = "\\w{1,16}", message = "Only latin. From 1 to 16 symbols")
     private String lastName;
     private String role;
     private String status;
     private String createdDate;
 
 
-    public static UserAccountUpdateDTO fromUserAccount(UserAccount userAccount) {
+    public static UserAccountDTO fromUserAccount(UserAccount userAccount) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
 
-        return UserAccountUpdateDTO.builder()
+        return UserAccountDTO.builder()
                 .id(userAccount.getId().toString())
                 .userName(userAccount.getUserName())
                 .password(userAccount.getPassword())

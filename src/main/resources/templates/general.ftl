@@ -1,3 +1,4 @@
+<#include "session.ftl">
 <#macro page>
 
 <!Doctype html>
@@ -21,6 +22,16 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="/user">UserSystem</a>
         </div>
+            <#if isAuthenticated>
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        <span class="nav-link">Hello, ${username} </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </#if>
     </div>
 </nav>
     <#nested>

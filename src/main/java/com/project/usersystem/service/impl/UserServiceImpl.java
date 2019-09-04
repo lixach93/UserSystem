@@ -1,13 +1,10 @@
 package com.project.usersystem.service.impl;
 
 import com.project.usersystem.ResourceNotFoundException;
-import com.project.usersystem.dto.UserAccountForm;
-import com.project.usersystem.dto.UserAccountUpdateDTO;
 import com.project.usersystem.model.UserAccount;
 import com.project.usersystem.repository.UserRepository;
 import com.project.usersystem.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
+import com.project.usersystem.service.exception.RegistrationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -22,23 +19,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public List<UserAccountUpdateDTO> getAll() {
+    public List<UserAccount> getAll() {
 
-        return userRepository.findAll()
-                .stream()
-                .map(UserAccountUpdateDTO::fromUserAccount)
-                .collect(Collectors.toList());
-
-
+        return userRepository.findAll();
     }
 
     @Override
@@ -55,8 +49,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void create(UserAccountForm dto) {
-        UserAccount userAccount = dto.toUserAccount();
+    public void create(UserAccount userAccount) {
+        UserAccount userAccount2 = userRepository.findByUserName(userAccount.getUserName());
+        if (userAccount2 != null) {
+            throw new RegistrationException();
+        }
         userRepository.save(userAccount);
     }
 
@@ -64,9 +61,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void changeStatus(Long id) {
         UserAccount userAccount = findById(id);
         UserAccount.UserStatus status = userAccount.getStatus();
-        if(UserAccount.UserStatus.ACTIVE == status){
+        if (UserAccount.UserStatus.ACTIVE == status) {
             userAccount.setStatus(UserAccount.UserStatus.INACTIVE);
-        }else{
+        } else {
             userAccount.setStatus(UserAccount.UserStatus.ACTIVE);
         }
         userRepository.save(userAccount);
@@ -91,12 +88,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
 
-        if(user.getStatus() == UserAccount.UserStatus.INACTIVE) {
+        if (user.getStatus() == UserAccount.UserStatus.INACTIVE) {
 
-            return   new  User(user.getUserName(),user.getPassword(),true,true,true,false,grantedAuthorities);
+            return new User(user.getUserName(), user.getPassword(), true, true, true, false, grantedAuthorities);
 
         }
-        return new  User(user.getUserName(), user.getPassword(), grantedAuthorities);
+        return new User(user.getUserName(), user.getPassword(), grantedAuthorities);
 
 
     }

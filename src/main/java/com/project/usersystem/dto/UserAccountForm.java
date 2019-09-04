@@ -16,15 +16,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserAccountForm {
 
-
+    @Pattern(regexp = "\\w{3,16}", message = "Only latin. From 3 to 16 symbols")
     private String userName;
+
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{3,16}$", message = "Latin symbols and digits. From 3 to 16.Min one digit, one symbols")
     private String password;
 
-    @Pattern(regexp = "\\w{1,16}")
+    @Pattern(regexp = "\\w{1,16}", message = "Only latin. From 1 to 16 symbols")
     private String firstName;
 
-    @Pattern(regexp = "\\w{1,16}")
+    @Pattern(regexp = "\\w{1,16}", message = "Only latin. From 1 to 16 symbols")
     private String lastName;
+
     private UserAccount.UserRole role;
     private UserAccount.UserStatus status;
 
@@ -35,17 +38,6 @@ public class UserAccountForm {
 
         return userAccount;
     }
-
-    public UserAccount toUserAccount(Long id, LocalDateTime date , String password){
-
-        UserAccount userAccount = setFields();
-        userAccount.setId(id);
-        userAccount.setPassword(password);
-        userAccount.setDate(date);
-
-        return userAccount;
-    }
-
 
     private UserAccount setFields(){
         return  UserAccount.builder()

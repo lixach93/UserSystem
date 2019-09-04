@@ -2,7 +2,7 @@
 <#import "general.ftl" as g />
 <@g.page>
 
-    <table class="table dynamic stripe records-per-page search showing-pages paging">
+    <table class="table">
         <thead>
         <tr>
             <th>Id</th>
