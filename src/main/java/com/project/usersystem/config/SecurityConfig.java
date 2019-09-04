@@ -1,4 +1,4 @@
-package com.project.usersystem;
+package com.project.usersystem.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/resources/**", "/resources/", "/login/**")
-                .permitAll().anyRequest().authenticated();
-        // http.authorizeRequests().anyRequest().permitAll();
-
-        http.csrf()
-                .disable();
+                .permitAll().anyRequest().authenticated()
+                .and()
+                .csrf().disable();
 
         http.formLogin()
                 .loginPage("/login").
@@ -65,10 +63,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 defaultSuccessUrl("/user", true)
                 .usernameParameter("login")
                 .passwordParameter("password")
-                .permitAll();
-
-
-        http.logout().logoutSuccessUrl("/").invalidateHttpSession(true)
+                .permitAll()
+                .and()
+                .logout().logoutSuccessUrl("/").invalidateHttpSession(true)
                 .and()
                 .exceptionHandling().accessDeniedPage("/403");
 

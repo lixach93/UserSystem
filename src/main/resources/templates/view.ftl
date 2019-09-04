@@ -1,6 +1,7 @@
 <#import "/spring.ftl" as spring />
-<#import "general.ftl" as g />
-<#include "session.ftl">
+<#import "layouts/general.ftl" as g />
+<#include "layouts/session.ftl">
+
 <@g.page>
     <div class="container">
         <div class="row">
@@ -18,7 +19,7 @@
         <div class="row">
             <div class="col-sm-4"></div>
                 <#if isAdmin>
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <form method="post" action="/user/${userAccount.id}">
                             <button type="submit" class="btn btn-primary">Lock/Unlock</button>
                         </form>

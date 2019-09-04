@@ -1,6 +1,6 @@
 package com.project.usersystem.service.impl;
 
-import com.project.usersystem.ResourceNotFoundException;
+import com.project.usersystem.service.exception.ResourceNotFoundException;
 import com.project.usersystem.model.UserAccount;
 import com.project.usersystem.repository.UserRepository;
 import com.project.usersystem.service.UserService;
@@ -30,12 +30,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserAccount> getAll() {
-
         return userRepository.findAll();
     }
 
     @Override
+    @Transactional
     public void update(UserAccount userAccount) {
         findById(userAccount.getId());
         userRepository.save(userAccount);
@@ -45,10 +46,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional(readOnly = true)
     public UserAccount getById(long id) {
         return findById(id);
-
     }
 
     @Override
+    @Transactional
     public void create(UserAccount userAccount) {
         UserAccount userAccount2 = userRepository.findByUserName(userAccount.getUserName());
         if (userAccount2 != null) {
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void changeStatus(Long id) {
         UserAccount userAccount = findById(id);
         UserAccount.UserStatus status = userAccount.getStatus();
@@ -89,9 +91,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
 
         if (user.getStatus() == UserAccount.UserStatus.INACTIVE) {
-
             return new User(user.getUserName(), user.getPassword(), true, true, true, false, grantedAuthorities);
-
         }
         return new User(user.getUserName(), user.getPassword(), grantedAuthorities);
 

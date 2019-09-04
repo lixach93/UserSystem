@@ -1,11 +1,15 @@
 <#import "/spring.ftl" as spring />
-<#import "general.ftl" as g />
+<#import "layouts/general.ftl" as g />
 
 <@g.page>
 
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
+            <#if error??>
+                <h4>${error}</h4>
+            </#if>
+
             <form action="/user/new" method="post">
                 <div class="form-group">
                     <@spring.bind "userForm.userName"/>

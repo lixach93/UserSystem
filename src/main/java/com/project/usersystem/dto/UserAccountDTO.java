@@ -18,13 +18,20 @@ import java.time.format.DateTimeFormatter;
 public class UserAccountDTO {
 
     private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
+
     private String id;
+
+    @Pattern(regexp = "[a-zA-Z]{3,16}", message = "Only latin. From 3 to 16 symbols")
     private String userName;
+
     private String password;
-    @Pattern(regexp = "\\w{1,16}", message = "Only latin. From 1 to 16 symbols")
+
+    @Pattern(regexp = "[a-zA-Z]{1,16}", message = "Only latin. From 1 to 16 symbols")
     private String firstName;
-    @Pattern(regexp = "\\w{1,16}", message = "Only latin. From 1 to 16 symbols")
+
+    @Pattern(regexp = "[a-zA-Z]{1,16}", message = "Only latin. From 1 to 16 symbols")
     private String lastName;
+
     private String role;
     private String status;
     private String createdDate;
@@ -46,26 +53,25 @@ public class UserAccountDTO {
                 .build();
     }
 
-    public  UserAccount toUserAccount(Long id){
+    public UserAccount toUserAccount(Long id) {
         UserAccount userAccount = setFields();
         userAccount.setId(id);
         return userAccount;
     }
 
 
-    private UserAccount setFields(){
+    private UserAccount setFields() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
-        return  UserAccount.builder()
+        return UserAccount.builder()
                 .userName(userName)
                 .password(password)
                 .firstName(firstName)
                 .lastName(lastName)
                 .role(UserAccount.UserRole.valueOf(role))
                 .status(UserAccount.UserStatus.valueOf(status))
-                .date(LocalDateTime.parse(createdDate,formatter))
+                .date(LocalDateTime.parse(createdDate, formatter))
                 .build();
     }
-
 
 
 }

@@ -1,6 +1,9 @@
 package com.project.usersystem.service.exception;
 
 public class RegistrationException extends RuntimeException {
+
+    private static final long serialVersionUID = 7945709409426101411L;
+
     public RegistrationException() {
         super();
     }

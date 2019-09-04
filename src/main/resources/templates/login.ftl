@@ -1,5 +1,5 @@
 
-<#import "general.ftl" as g />
+<#import "layouts/general.ftl" as g />
 <#import "/spring.ftl" as spring />
 
 <@g.page>

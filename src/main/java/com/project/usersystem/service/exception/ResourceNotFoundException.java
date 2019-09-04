@@ -1,4 +1,4 @@
-package com.project.usersystem;
+package com.project.usersystem.service.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

@@ -9,7 +9,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,22 +25,18 @@ import java.time.LocalDateTime;
 )
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccount {
+public class UserAccount implements Serializable {
+
+    private static final long serialVersionUID = 7278921055457709135L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Pattern(regexp = "\\w{3,16}")
-    @Column(unique = true)
+
     private String userName;
     private String password;
-
-
-    @Pattern(regexp = "\\w{1,16}")
     private String firstName;
-
-    @Pattern(regexp = "\\w{1,16}")
     private String lastName;
 
     @Enumerated(EnumType.STRING)
@@ -51,7 +47,6 @@ public class UserAccount {
     @Type(type = "status_enum")
     private UserStatus status;
 
-    @Column(nullable = false)
     private LocalDateTime date;
 
 

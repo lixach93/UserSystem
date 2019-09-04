@@ -61,13 +61,12 @@ public class UserController {
 
     @GetMapping("/{id}/edit")
     @PreAuthorize(value = "hasRole('ADMIN')")
-    public String showForm(@PathVariable("id") Long id, Model model) {
+    public String edit(@PathVariable("id") Long id, Model model) {
 
         UserAccount userAccount = userService.getById(id);
         model.addAttribute("userAccount", UserAccountDTO.fromUserAccount(userAccount));
         model.addAttribute("id", userAccount.getId());
-        model.addAttribute("roleTypes", UserAccount.UserRole.values());
-        model.addAttribute("statusTypes", UserAccount.UserStatus.values());
+        setModel(model);
         return "edit";
     }
 
@@ -76,8 +75,7 @@ public class UserController {
     public String edit(@PathVariable("id") Long id, @Valid @ModelAttribute("userAccount") UserAccountDTO userAccountDTO, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("roleTypes", UserAccount.UserRole.values());
-            model.addAttribute("statusTypes", UserAccount.UserStatus.values());
+            setModel(model);
             return "edit";
         }
         UserAccount userAccount = userAccountDTO.toUserAccount(id);
@@ -88,35 +86,39 @@ public class UserController {
 
     @GetMapping("/new")
     @PreAuthorize(value = "hasRole('ADMIN')")
-    public String registration(Model model) {
+    public String newUserAccount(Model model) {
 
         model.addAttribute("userForm", new UserAccountForm());
-        model.addAttribute("roleTypes", UserAccount.UserRole.values());
-        model.addAttribute("statusTypes", UserAccount.UserStatus.values());
-        return "createUser";
+        setModel(model);
+        return "new";
     }
 
     @PostMapping("/new")
     @PreAuthorize(value = "hasRole('ADMIN')")
-    public String registration(@Valid @ModelAttribute("userForm") UserAccountForm userDto, BindingResult bindingResult, Model model) {
+    public String newUserAccount(@Valid @ModelAttribute("userForm") UserAccountForm userForm, BindingResult bindingResult, Model model) {
 
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("roleTypes", UserAccount.UserRole.values());
-            model.addAttribute("statusTypes", UserAccount.UserStatus.values());
-            return "createUser";
+            setModel(model);
+            return "new";
         }
         try {
-            UserAccount userAccount = userDto.toUserAccount();
-            userAccount.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+            UserAccount userAccount = userForm.toUserAccount();
+            userAccount.setPassword(bCryptPasswordEncoder.encode(userForm.getPassword()));
             userService.create(userAccount);
 
         } catch (RegistrationException e) {
-            model.addAttribute("error", " error");
-            return "registration";
+            model.addAttribute("error", "User already exists. Change userName");
+            setModel(model);
+            return "new";
         }
 
         return "redirect:/user";
     }
 
+
+    private void setModel(Model model) {
+        model.addAttribute("roleTypes", UserAccount.UserRole.values());
+        model.addAttribute("statusTypes", UserAccount.UserStatus.values());
+    }
 }

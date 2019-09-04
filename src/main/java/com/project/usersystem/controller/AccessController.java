@@ -11,7 +11,7 @@ import java.security.Principal;
 public class AccessController {
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
-    public ModelAndView accesssDenied(Principal user) {
+    public ModelAndView accessDenied(Principal user) {
 
         ModelAndView model = new ModelAndView();
 
