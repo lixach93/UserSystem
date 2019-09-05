@@ -6,6 +6,9 @@ import com.project.usersystem.dto.UserAccountDTO;
 import com.project.usersystem.model.UserAccount;
 import com.project.usersystem.service.UserService;
 import com.project.usersystem.service.exception.RegistrationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,14 +34,13 @@ public class UserController {
     }
 
     @GetMapping
-    public String get(Model model) {
+    public String get(Model model, @PageableDefault(sort = {"id"},value = 1) Pageable pageable) {
 
-        List<UserAccountDTO> dto = userService.getAll()
-                .stream()
-                .map(UserAccountDTO::fromUserAccount)
-                .collect(Collectors.toList());
-        model.addAttribute("users", dto);
+        Page<UserAccountDTO> page = userService.getAll(pageable).
+                map(UserAccountDTO::fromUserAccount);
 
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/user");
         return "list";
     }
 

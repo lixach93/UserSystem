@@ -1,12 +1,14 @@
 package com.project.usersystem.service;
 
 import com.project.usersystem.model.UserAccount;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<UserAccount> getAll();
+    Page<UserAccount> getAll(Pageable pageable);
 
     void update(UserAccount userAccount);
 

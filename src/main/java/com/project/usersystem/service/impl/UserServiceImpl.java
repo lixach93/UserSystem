@@ -5,6 +5,8 @@ import com.project.usersystem.model.UserAccount;
 import com.project.usersystem.repository.UserRepository;
 import com.project.usersystem.service.UserService;
 import com.project.usersystem.service.exception.RegistrationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -31,8 +33,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserAccount> getAll() {
-        return userRepository.findAll();
+    public Page<UserAccount> getAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override

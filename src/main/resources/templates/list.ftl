@@ -1,7 +1,9 @@
 <#import "/spring.ftl" as spring />
 <#import "layouts/general.ftl" as g />
-<@g.page>
+<#import "pages.ftl" as p/>
 
+<@g.page>
+    <@p.pager url page/>
     <table class="table">
         <thead>
         <tr>
@@ -15,7 +17,7 @@
         </tr>
         </thead>
         <tbody>
-        <#list users as user>
+        <#list page.content as user>
             <tr>
                 <td>
                     <a href="/user/${user.id}">${user.id}</a>

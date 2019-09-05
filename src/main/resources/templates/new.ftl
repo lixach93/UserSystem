@@ -7,7 +7,7 @@
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <#if error??>
-                <h4>${error}</h4>
+                <h4>${error}</h4>git
             </#if>
 
             <form action="/user/new" method="post">
